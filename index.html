@@ -33,14 +33,14 @@
         methods: {
             async search() {
                 this.rooms.length = 0;
-                if (this.postCode == "NW1" || this.postCode == "NW2") {
+                if (this.postCode.match(/^(NW1|NW2|NW3|NW4|NW5|NW6|NW7|NW8|NW9|NW10|NW11)$/)) {
                     let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
                     let usrArr = await result.json();
                     for (let i = 0; i < usrArr.length; i++) {
                         this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent });
                     }
                 }
-                else{
+                else {
                     this.rooms.length = 0;
                 }
             },
