@@ -46,7 +46,7 @@ function getAllRooms(request, response) {
             console.error("Error executing query: " + JSON.stringify(err));
         }
         else {//Output results in JSON format - a web service would return this string.
-            console.log(result)
+            // console.log(result)
             response.send(result);
         }
     });
@@ -74,7 +74,7 @@ function getbyPostCode(request, response) {
         }
         else {//Output results in JSON format - a web service would return this string.
             response.send(result);
-            console.log(result);
+            // console.log(result);
         }
     });
 }
