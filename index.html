@@ -5,24 +5,34 @@
     <title>RentSmart</title>
     <!-- Load the Vue.js as a JavaScript library -->
     <script src="https://unpkg.com/vue"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body>
     <div id="display">
     
         <h1>RentSmart</h1>
         <strong>Search Bar</strong>
         <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
-        <button @click="search" class="fas fa-search-location"></button>
-        <button @click="displayAllRooms">Display All Roomss</button>
+        <button @click="search" class="fas fa-search-location 1x"></button>
+        <button @click="displayAllRooms">Display All Rooms</button>
         <p>You searched for '{{postCode}}'</p>
+
         <ul>
-            <p v-for="(room, rooms) in rooms">
-                <img v-bind:src="room.image_url" alt="" height="100px" width="100">
+            <div v-for="(room, rooms) in rooms">
+                <!-- <img v-bind:src="room.image_url" alt="" height="100px" width="100">
                 <b>Description: </b>{{room.description}}
-                <b>Rent: </b> {{room.rent}}
-            </p>
+                <b>Rent: </b> {{room.rent}} -->
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" v-bind:src="room.image_url" alt="Card image cap">
+                    <div class="card-body">
+                      <p class="card-title"><b>Description: </b>{{room.description}}</p>
+                      <p class="card-text"><b>Rent: </b>£ {{room.rent}}</p>
+                      <a href="#" class="btn btn-primary">open</a>
+                    </div>
+                  </div>
+                </div>
         </ul>
     </div>
 </body>
@@ -57,7 +67,7 @@
                 let result = await fetch("http://localhost:8080/rooms");
                 let usrArr = await result.json();
                 for (let i = 0; i < usrArr.length; i++) {
-                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent });
+                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent,image_url: usrArr[i].image_url });
                 }
             },
         }
