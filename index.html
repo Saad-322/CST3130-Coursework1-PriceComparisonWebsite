@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>RentSmart</title>
+    <!-- Load the Vue.js as a JavaScript library -->
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="display">
+        <h1>RentSmart</h1>
+        <strong>Search Bar</strong>
+        <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
+        <button @click="search">search</button>
+        <button @click="displayAllRooms">Display All Rooms</button>
+        <p>You searched for '{{postCode}}'</p>
+        <ul>
+            <p v-for="(room, rooms) in rooms">
+                <b>Description: </b>{{room.description}}
+                <b>Rent: </b> {{room.rent}}
+            </p>
+        </ul>
+    </div>
+</body>
+<script>
+    let app = new Vue({
+        el: "#display",
+        data: {
+            postCode: "",
+            rooms: [],
+        },
+        methods: {
+            async search() {
+                this.rooms.length = 0;
+                if (this.postCode.match(/^(NW1|NW2|NW3|NW4|NW5|NW6|NW7|NW8|NW9|NW10|NW11)$/)) {
+                    let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
+                    let usrArr = await result.json();
+                    for (let i = 0; i < usrArr.length; i++) {
+                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent });
+                    }
+                }
+                else {
+                    this.rooms.length = 0;
+                }
+            },
+            async displayAllRooms() {
+                let result = await fetch("http://localhost:8080/rooms");
+                let usrArr = await result.json();
+                for (let i = 0; i < usrArr.length; i++) {
+                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent });
+                }
+            },
+        }
+    })
+</script>
+
+</html>
