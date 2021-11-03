@@ -9,30 +9,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<style>
+    .card {
+        display:inline-block !important;
+        margin-left: 10px;
+        width: 20rem;
+    }
+    .top{
+        margin-left: 10px;
+        margin-top: 10px;
+        display: block;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+</style>
+
 <body>
     <div id="display">
-    
-        <h1>RentSmart</h1>
-        <strong>Search Bar</strong>
-        <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
-        <button @click="search" class="fas fa-search-location 1x"></button>
-        <button @click="displayAllRooms">Display All Rooms</button>
-        <p>You searched for '{{postCode}}'</p>
+        <div class="top">
+            <h1>RentSmart</h1>
+            <strong>Search Bar</strong>
+            <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
+            <button @click="search" class="fas fa-search-location 1x"></button>
+            <button @click="displayAllRooms">Display All Rooms</button>
+            <p>You searched for '{{postCode}}'</p>
+        </div>
+      
 
         <ul>
-            <div v-for="(room, rooms) in rooms">
+            <div class="card" v-for="(room, rooms) in rooms">
                 <!-- <img v-bind:src="room.image_url" alt="" height="100px" width="100">
                 <b>Description: </b>{{room.description}}
                 <b>Rent: </b> {{room.rent}} -->
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" v-bind:src="room.image_url" alt="Card image cap">
+                <!-- <div class="card" style="width: 18rem;"> -->
+                    <img class="card-img-top" v-bind:src="room.image_url" alt="Card image cap" width="150px" height="150px">
                     <div class="card-body">
-                      <p class="card-title"><b>Description: </b>{{room.description}}</p>
-                      <p class="card-text"><b>Rent: </b>£ {{room.rent}}</p>
-                      <a href="#" class="btn btn-primary">open</a>
+                        <p class="card-title"><b>Description: </b>{{room.description}}</p>
+                        <p class="card-text"><b>Rent: </b>£ {{room.rent}}</p>
+                        <a href="#" class="btn btn-primary">view AD</a>
                     </div>
-                  </div>
-                </div>
+                <!-- </div> -->
+            </div>
         </ul>
     </div>
 </body>
@@ -51,7 +67,7 @@
                     let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
                     let usrArr = await result.json();
                     for (let i = 0; i < usrArr.length; i++) {
-                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url});
+                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url });
                     }
                 }
                 else {
@@ -67,7 +83,7 @@
                 let result = await fetch("http://localhost:8080/rooms");
                 let usrArr = await result.json();
                 for (let i = 0; i < usrArr.length; i++) {
-                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent,image_url: usrArr[i].image_url });
+                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url });
                 }
             },
         }
