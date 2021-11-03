@@ -5,18 +5,21 @@
     <title>RentSmart</title>
     <!-- Load the Vue.js as a JavaScript library -->
     <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 
 <body>
     <div id="display">
+    
         <h1>RentSmart</h1>
         <strong>Search Bar</strong>
         <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
-        <button @click="search">search</button>
-        <button @click="displayAllRooms">Display All Rooms</button>
+        <button @click="search" class="fas fa-search-location"></button>
+        <button @click="displayAllRooms">Display All Roomss</button>
         <p>You searched for '{{postCode}}'</p>
         <ul>
             <p v-for="(room, rooms) in rooms">
+                <img v-bind:src="room.image_url" alt="" height="100px" width="100">
                 <b>Description: </b>{{room.description}}
                 <b>Rent: </b> {{room.rent}}
             </p>
@@ -24,6 +27,7 @@
     </div>
 </body>
 <script>
+
     let app = new Vue({
         el: "#display",
         data: {
@@ -37,14 +41,19 @@
                     let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
                     let usrArr = await result.json();
                     for (let i = 0; i < usrArr.length; i++) {
-                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent });
+                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url});
                     }
                 }
                 else {
+                    alert("Enter postcode between NW1-NW11");
+                    this.$forceUpdate();
                     this.rooms.length = 0;
                 }
             },
             async displayAllRooms() {
+                this.$forceUpdate();
+                this.rooms.length = 0;
+                this.postCode = "All Rooms";
                 let result = await fetch("http://localhost:8080/rooms");
                 let usrArr = await result.json();
                 for (let i = 0; i < usrArr.length; i++) {
