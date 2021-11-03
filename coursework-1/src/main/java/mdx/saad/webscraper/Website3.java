@@ -51,7 +51,7 @@ public class Website3 extends Thread {
 			System.out.println(", " + address.text());
 			System.out.println("PRICE: " + price.text());
 			System.out.println("Website URL: "+"https://www.zoopla.co.uk"+ websiteURL.attr("href"));
-			System.out.println("IMAGE: " + y.get(1).select("img"));
+//			System.out.println("IMAGE: " + y.get(1).select("img"));
 			
 //			String x = price.text().trim();
 //			String[] parts = x.split(" ");
@@ -78,7 +78,7 @@ public class Website3 extends Thread {
 
 	public void run() {
 		try {
-			for(int j = 1; j<3; j++) {
+			for(int j = 1; j<12; j++) {
 				postCode = "NW"+j;
 				// Web Scraping code goes here
 				try {

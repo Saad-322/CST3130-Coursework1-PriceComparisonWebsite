@@ -13,9 +13,9 @@ public class Main {
 		Website3 w3 = new Website3("ZOOPLA",example);//IdealFlatemate
 		Website4 w4 = new Website4("GUMTREE",example);//GumTree
 		w1.start();
-//		w2.start();
-//		w3.start();
-//		w4.start();
+		w2.start();
+		w3.start();
+		w4.start();
 		Scanner scanner = new Scanner(System.in);
 		String userInput = scanner.nextLine();
 		while (!userInput.equals("stop")) {

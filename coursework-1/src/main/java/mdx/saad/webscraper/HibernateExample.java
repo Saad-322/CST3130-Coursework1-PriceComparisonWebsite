@@ -31,7 +31,7 @@ public class HibernateExample {
 
           //Load configuration from hibernate configuration file.
           //Here we are using a configuration file that specifies Java annotations.
-          standardServiceRegistryBuilder.configure("resources/hibernate-annotations.xml"); 
+          standardServiceRegistryBuilder.configure("hibernate-annotations.cfg.xml"); 
 
           //Create the registry that will be used to build the session factory
           StandardServiceRegistry registry = standardServiceRegistryBuilder.build();

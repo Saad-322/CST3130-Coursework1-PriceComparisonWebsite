@@ -79,7 +79,6 @@ public class Website1 extends Thread {
 			Elements websiteURL = rooms.get(i).select(".propertyCard-link");
 			Elements imageURL = rooms.get(i).select("img");
 			
-			System.out.println("IMAGE: "+imageURL.attr("abs:src"));
 			// Output the data that we have downloaded
 
 			System.out.println("DESCRIPTION: " + description.text());
@@ -107,7 +106,7 @@ public class Website1 extends Thread {
 
 	public void run() {
 		try {
-			for(int j = 1; j<3; j++) {
+			for(int j = 1; j<12; j++) {
 				
 				postCode = "NW"+j;
 				// Web Scraping code goes here

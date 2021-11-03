@@ -68,7 +68,7 @@ public class Website4 extends Thread {
 
 	public void run() {
 		try {
-			for(int j = 1; j<3; j++) {
+			for(int j = 1; j<12; j++) {
 				
 				postCode = "NW"+j;
 				// Web Scraping code goes here
