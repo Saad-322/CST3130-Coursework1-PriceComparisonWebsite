@@ -24,6 +24,9 @@ public class Seller {
     }
     
     //Getters and setters
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setName(String n) {
         this.name = n;
     }
@@ -32,6 +35,12 @@ public class Seller {
     }
     public int getId() {
         return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public String getContactInfo() {
+    	return contactInfo;
     }
     
 }

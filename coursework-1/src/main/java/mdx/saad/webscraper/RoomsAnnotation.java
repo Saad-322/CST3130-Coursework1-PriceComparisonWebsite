@@ -28,9 +28,6 @@ public class RoomsAnnotation {
     @Column(name = "seller_id")
     private int sellerID;
     
-//    private Seller seller;
-//    seller.getSellerID()
-    
     @Column(name = "website_url")
     private String websiteURL;
 

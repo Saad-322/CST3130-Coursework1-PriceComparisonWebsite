@@ -50,7 +50,9 @@ public class Website2 extends Thread {
 			
 			String[] parts = price.text().trim().split(" ");
 			parts[0] = parts[0].replace(",", "");
-			example.addRoom(description.text(),Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.openrent.co.uk"+ websiteURL.attr("href"),imageURL.attr("abs:src"));
+			
+			int sellerID = example.searchSeller("Saad","07459353041");
+			example.addRoom(description.text(),Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.openrent.co.uk"+ websiteURL.attr("href"),imageURL.attr("abs:src"),sellerID);
 //			example.updateRoom();
 //			example.searchRooms();
 //			example.deleteRoom();

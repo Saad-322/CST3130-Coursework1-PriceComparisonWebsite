@@ -44,11 +44,12 @@ public class Website4 extends Thread {
 			// Output the data that we have downloaded
 
 			System.out.println("DESCRIPTION: " + description.text());
+			int sellerID = example.searchSeller("Saad","07459353041");
 
 			String x = price.text().trim();
 			if (x.charAt(x.length() - 1) == 'w') {
 				int modifiedPrice = (int) (Integer.parseInt(x.substring(1, 4)) * 52.14) / 12;
-				example.addRoom(description.text(), modifiedPrice,postCode,"https://www.gumtree.com"+ websiteURL.attr("href"),imageURL.attr("abs:src"));
+				example.addRoom(description.text(), modifiedPrice,postCode,"https://www.gumtree.com"+ websiteURL.attr("href"),imageURL.attr("abs:src"),sellerID);
 				System.out.println("PRICE: £" + modifiedPrice + "pm");
 				System.out.println("Website URL: "+websiteURL);
 			} else {
@@ -56,7 +57,7 @@ public class Website4 extends Thread {
 				System.out.println("Website URL: "+websiteURL);
 				String[] parts = price.text().trim().split("p");
 				parts[0] = parts[0].replace(",", "");
-				example.addRoom(description.text(), Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.gumtree.com"+ websiteURL.attr("href"),imageURL.attr("abs:src"));
+				example.addRoom(description.text(), Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.gumtree.com"+ websiteURL.attr("href"),imageURL.attr("abs:src"),sellerID);
 				System.out.println();
 			}
 		

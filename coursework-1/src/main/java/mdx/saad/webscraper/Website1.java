@@ -88,15 +88,18 @@ public class Website1 extends Thread {
 			
 			String[] parts = price.text().trim().split(" ");
 			parts[0] = parts[0].replace(",", "");
-			example.addRoom(description.text(),Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.rightmove.co.uk"+ websiteURL.attr("href"),imageURL.attr("abs:src"));
+			
+			//Search if seller already exists
+
+			
+			//Add new Seller to table and map it to the rooms table
+			int sellerID = example.searchSeller("Saad","07459353041");
+			example.addRoom(description.text(),Integer.parseInt(parts[0].substring(1, parts[0].length())),postCode,"https://www.rightmove.co.uk"+ websiteURL.attr("href"),imageURL.attr("abs:src"),sellerID);
 //			example.updateRoom();
 //			example.searchRooms();
 //			example.deleteRoom();
 			
-			//first check sellers DB if seller not present then add
-//			if(!example.searchSellers("Saad")) {
-//				example.addSeller("Saad","322");
-//			}
+
 
 		}
 		
@@ -106,7 +109,7 @@ public class Website1 extends Thread {
 
 	public void run() {
 		try {
-			for(int j = 1; j<12; j++) {
+			for(int j = 1; j<3; j++) {
 				
 				postCode = "NW"+j;
 				// Web Scraping code goes here

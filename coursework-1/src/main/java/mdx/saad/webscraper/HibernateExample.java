@@ -59,7 +59,7 @@ public class HibernateExample {
   
   
   /** Adds a new Room to the database */
-  public void addRoom(String description, int rent, String postCode, String websiteURL, String imageURL){
+  public void addRoom(String description, int rent, String postCode, String websiteURL, String imageURL, int sID){
       //Get a new Session instance from the session factory
       Session session = sessionFactory.getCurrentSession();
 
@@ -71,7 +71,7 @@ public class HibernateExample {
       Room.setPostCode(postCode);
       Room.setRent(rent);
       Room.setImageURL(imageURL);
-      Room.setSellerID(1);
+      Room.setSellerID(sID);
       Room.setWebsiteURL(websiteURL);
 
       //Start transaction
@@ -87,17 +87,9 @@ public class HibernateExample {
       session.close();
       System.out.println("Room added to database with ID: " + Room.getId());
   }
-  public void addSeller(String sellerName, String sellerContactInfo) {
+  public void addSeller(Seller seller) {
       //Get a new Session instance from the session factory
       Session session = sessionFactory.getCurrentSession();
-
-      //Create an instance of a Room class 
-      Seller seller = new Seller();
-
-      //Set values of Room class that we want to add
-      seller.setName(sellerName);
-      seller.setContactInfo(sellerContactInfo);
-
 
       //Start transaction
       session.beginTransaction();
@@ -159,36 +151,31 @@ public class HibernateExample {
     //Close the session and release database connection
       session.close();
   }
-  public Boolean searchSellers(String sellerName) {
+  public int searchSeller(String name, String contact_info) {
       //Get a new Session instance from the session factory
       Session session = sessionFactory.getCurrentSession();
       
       session.beginTransaction();
       
-      List<Seller> sellerList = session.createQuery("from Seller where name ="+sellerName).getResultList();
-      
+      List<Seller> sellerList = session.createQuery("from Seller where name='"+name+"' and contactInfo='"+contact_info+"'").getResultList();
       if (sellerList.size()==0) {
-    	  session.close();
-    	  return false;
+		Seller seller = new Seller();
+		seller.setName("Saad");
+		seller.setContactInfo("07459353041");
+	    //Add Room to database - will not be stored until we commit the transaction
+	    session.save(seller);
+
+	    //Commit transaction to save it to database
+	    session.getTransaction().commit();
+    	session.close();
+    	return seller.getId();
       }
       else {
+    	  Object sellerID = session.createQuery("select id from Seller where name='"+name+"' and contactInfo='"+contact_info+"'").getSingleResult();
     	  session.close();
-    	  return true;
+    	  return (int)sellerID;  
       }
-//      for(Seller seller : sellerList) {
-//    	  System.out.println(seller.toString());
-//      }
-    //Close the session and release database connection
-
   }
-  
-//  public Seller getSeller(String sellerName / number) {
-//	  //search for seller using HQL
-//	  Create if not found
-//	  return seller
-//			  
-//  }
-//  
   public void deleteRoom() {
       //Get a new Session instance from the session factory
       Session session = sessionFactory.getCurrentSession();
