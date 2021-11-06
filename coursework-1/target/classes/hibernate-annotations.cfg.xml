@@ -21,7 +21,7 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     
     <!-- Mapping with annotation - specify the annotated classes here -->
-    <mapping class="mdx.saad.webscraper.RoomsAnnotation"/>
+    <mapping class="mdx.saad.webscraper.Room"/>
     <mapping class="mdx.saad.webscraper.Seller"/>
     
   </session-factory>
