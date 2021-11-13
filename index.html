@@ -11,11 +11,12 @@
 </head>
 <style>
     .card {
-        display:inline-block !important;
+        display: inline-block !important;
         margin-left: 10px;
         width: 20rem;
     }
-    .top{
+
+    .top {
         margin-left: 10px;
         margin-top: 10px;
         display: block;
@@ -33,21 +34,20 @@
             <button @click="displayAllRooms">Display All Rooms</button>
             <p>You searched for '{{postCode}}'</p>
         </div>
-      
 
+        <h4>Sort by Price</h4>
+        <input type="radio" value="ascending" name="order" v-model=sortingOrder>
+        <label>Ascending</label><br>
+        <input type="radio" value="descending" name="order" v-model=sortingOrder>
+        <label>Descending</label>
         <ul>
-            <div class="card" v-for="(room, rooms) in rooms">
-                <!-- <img v-bind:src="room.image_url" alt="" height="100px" width="100">
-                <b>Description: </b>{{room.description}}
-                <b>Rent: </b> {{room.rent}} -->
-                <!-- <div class="card" style="width: 18rem;"> -->
-                    <img class="card-img-top" v-bind:src="room.image_url" alt="Card image cap" width="150px" height="150px">
-                    <div class="card-body">
-                        <p class="card-title"><b>Description: </b>{{room.description}}</p>
-                        <p class="card-text"><b>Rent: </b>£ {{room.rent}}</p>
-                        <a href="#" class="btn btn-primary">view AD</a>
-                    </div>
-                <!-- </div> -->
+            <div class="card" v-for="(room, rooms) in sortedRooms">
+                <img class="card-img-top" v-bind:src="room.image_url" alt="Card image cap" width="150px" height="150px">
+                <div class="card-body">
+                    <p class="card-title"><b>Description: </b>{{room.description}}</p>
+                    <p class="card-text"><b>Rent: </b>£ {{room.rent}}</p>
+                    <a v-bind:href="room.website_url" class="btn btn-primary">view AD</a>
+                </div>
             </div>
         </ul>
     </div>
@@ -59,7 +59,9 @@
         data: {
             postCode: "",
             rooms: [],
+            sortingOrder: "",
         },
+
         methods: {
             async search() {
                 this.rooms.length = 0;
@@ -67,7 +69,7 @@
                     let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
                     let usrArr = await result.json();
                     for (let i = 0; i < usrArr.length; i++) {
-                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url });
+                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url, website_url: usrArr[i].website_url});
                     }
                 }
                 else {
@@ -83,9 +85,32 @@
                 let result = await fetch("http://localhost:8080/rooms");
                 let usrArr = await result.json();
                 for (let i = 0; i < usrArr.length; i++) {
-                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url });
+                    this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url, website_url: usrArr[i].website_url });
                 }
-            },
+            }
+        },
+        computed: {
+            sortedRooms() {
+                        if (this.sortingOrder == "ascending") {
+                            function compare(a, b) {
+                                if (a.rent < b.rent)
+                                    return -1;
+                                if (a.rent > b.rent)
+                                    return 1;
+                                return 0;
+                            }
+                        }
+                        else if (this.sortingOrder == "descending") {
+                            function compare(a, b) {
+                                if (a.rent > b.rent)
+                                    return -1;
+                                if (a.rent < b.rent)
+                                    return 1;
+                                return 0;
+                            }
+                        }
+                return this.rooms.sort(compare);
+            }
         }
     })
 </script>
