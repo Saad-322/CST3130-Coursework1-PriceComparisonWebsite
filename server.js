@@ -2,7 +2,8 @@
 var express = require('express');
 var url = require("url");
 
-
+//Import database functions
+const db = require('./database');
 
 //Status codes defined in external file
 require('./http_status.js');
@@ -36,21 +37,50 @@ app.get('/rooms/*', getbyPostCode);
 //Start the app listening on port 8080
 app.listen(8080);
 
-function getAllRooms(request, response) {
-    //Build query
-    let sql = "SELECT * FROM rooms";
-
-    //Execute query and output results
-    connectionPool.query(sql, (err, result) => {
-        if (err) {//Check for errors
-            console.error("Error executing query: " + JSON.stringify(err));
-        }
-        else {//Output results in JSON format - a web service would return this string.
-            // console.log(result)
-            response.send(result);
-        }
-    });
+//Handles GET requests to our web service
+function getAllRooms(request, response){
+        db.getAllRooms(response);
 }
+
+// function getAllRooms(request, response) {
+//     //Build query
+//     let sql = "SELECT * FROM rooms";
+
+//     //Execute query and output results
+//     connectionPool.query(sql, (err, result) => {
+//         if (err) {//Check for errors
+//             console.error("Error executing query: " + JSON.stringify(err));
+//         }
+//         else {//Output results in JSON format - a web service would return this string.
+//             // console.log(result)
+//             response.send(result);
+//         }
+//     });
+// }
+
+// function test(){
+
+//     let request = {
+//         url: "klsdjflkdjsl"
+//     }
+
+//     let response = {
+//         send: function(result){
+//             console.log("INSIDE MOCK OBJECT");
+//             console.log(result);
+//             //ASSERTIONS WOULD GO HERE.
+//         }
+//     }
+//     //Establish state of database uisng SQL or something
+
+//     getbyPostCode(request, response);
+
+//     //REset database at end of test.
+
+// }
+
+
+
 function getbyPostCode(request, response) {
     //Parse the URL
     var urlObj = url.parse(request.url, true);
@@ -74,10 +104,12 @@ function getbyPostCode(request, response) {
         }
         else {//Output results in JSON format - a web service would return this string.
             response.send(result);
-            // console.log(result);
         }
     });
 }
+
+//Export Server for testing
+module.exports = app;
 
 // /* Handles GET requests sent to web service.
 //    Processes path and query string and calls appropriate functions to
