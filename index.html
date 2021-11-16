@@ -55,7 +55,7 @@
             </div>
         </ul>
 
-        <span id="pagination">
+        <span id="pagination" v-if="showPagination">
             <button @click="decreaseOffset" :disabled="firstPage" class="fas fa-chevron-circle-left"></button>
             <button @click="increaseOffset" :disabled="lastPage" class="fas fa-chevron-circle-right"></button>
         </span>
@@ -141,10 +141,13 @@
                 return this.rooms.sort(compare);
             },
             firstPage() {
-                return this.offset == 0 || this.rooms.length == 0 || this.postCode == "All Rooms";
+                return this.offset == 0;
             },
             lastPage() {
-                return this.lastpage || this.rooms.length == 0 || this.postCode == "All Rooms";
+                return this.lastpage;
+            },
+            showPagination(){
+                return this.rooms.length != 0 & this.postCode != "All Rooms";
             }
         },
 
