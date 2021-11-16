@@ -22,6 +22,10 @@
         display: block;
         font-family: Arial, Helvetica, sans-serif;
     }
+
+    #pagination {
+        margin-left: 680px;
+    }
 </style>
 
 <body>
@@ -30,7 +34,7 @@
             <h1>RentSmart</h1>
             <strong>Search Bar</strong>
             <input type="text" placeholder="NW1 - NW11" v-model.trim=postCode>
-            <button @click="search" class="fas fa-search-location 1x"></button>
+            <button @click="resetAndSearch" class="fas fa-search-location 1x"></button>
             <button @click="displayAllRooms">Display All Rooms</button>
             <p>You searched for '{{postCode}}'</p>
         </div>
@@ -50,26 +54,40 @@
                 </div>
             </div>
         </ul>
+
+        <span id="pagination">
+            <button @click="decreaseOffset" :disabled="firstPage" class="fas fa-chevron-circle-left"></button>
+            <button @click="increaseOffset" :disabled="lastPage" class="fas fa-chevron-circle-right"></button>
+        </span>
     </div>
 </body>
 <script>
-
     let app = new Vue({
         el: "#display",
         data: {
             postCode: "",
             rooms: [],
             sortingOrder: "",
+            offset: 0,
+            lastpage: false
         },
 
         methods: {
+            resetAndSearch(){
+                this.offset = 0;
+                this.lastpage = false;
+                this.search();
+            },
             async search() {
                 this.rooms.length = 0;
                 if (this.postCode.match(/^(NW1|NW2|NW3|NW4|NW5|NW6|NW7|NW8|NW9|NW10|NW11)$/)) {
-                    let result = await fetch("http://localhost:8080/rooms/" + this.postCode);
+                    let result = await fetch("http://localhost:8080/rooms/" + this.postCode + "?offset=" + this.offset);
                     let usrArr = await result.json();
                     for (let i = 0; i < usrArr.length; i++) {
-                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url, website_url: usrArr[i].website_url});
+                        this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url, website_url: usrArr[i].website_url });
+                    }
+                    if (usrArr.length < 20) {
+                        this.lastpage = true;
                     }
                 }
                 else {
@@ -87,31 +105,49 @@
                 for (let i = 0; i < usrArr.length; i++) {
                     this.rooms.push({ description: usrArr[i].description, rent: usrArr[i].rent, image_url: usrArr[i].image_url, website_url: usrArr[i].website_url });
                 }
-            }
+            },
+            increaseOffset() {
+                this.offset = this.offset + 20;
+                this.search();
+            },
+            decreaseOffset() {
+                if (this.offset != 0) {
+                    this.offset = this.offset - 20;
+                    this.search();
+                }
+                this.lastpage = false;
+            },
         },
         computed: {
             sortedRooms() {
-                        if (this.sortingOrder == "ascending") {
-                            function compare(a, b) {
-                                if (a.rent < b.rent)
-                                    return -1;
-                                if (a.rent > b.rent)
-                                    return 1;
-                                return 0;
-                            }
-                        }
-                        else if (this.sortingOrder == "descending") {
-                            function compare(a, b) {
-                                if (a.rent > b.rent)
-                                    return -1;
-                                if (a.rent < b.rent)
-                                    return 1;
-                                return 0;
-                            }
-                        }
+                if (this.sortingOrder == "ascending") {
+                    function compare(a, b) {
+                        if (a.rent < b.rent)
+                            return -1;
+                        if (a.rent > b.rent)
+                            return 1;
+                        return 0;
+                    }
+                }
+                else if (this.sortingOrder == "descending") {
+                    function compare(a, b) {
+                        if (a.rent > b.rent)
+                            return -1;
+                        if (a.rent < b.rent)
+                            return 1;
+                        return 0;
+                    }
+                }
                 return this.rooms.sort(compare);
+            },
+            firstPage() {
+                return this.offset == 0 || this.rooms.length == 0 || this.postCode == "All Rooms";
+            },
+            lastPage() {
+                return this.lastpage || this.rooms.length == 0 || this.postCode == "All Rooms";
             }
-        }
+        },
+
     })
 </script>
 
