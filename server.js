@@ -25,7 +25,7 @@ var connectionPool = mysql.createPool({
     connectionLimit: 1,
     host: "localhost",
     user: "root",
-    password: "Ifeelucrepin@1",
+    password: "12345678",
     database: "RentSmart",
     debug: false
 });
@@ -37,20 +37,23 @@ app.get('/rooms/*', getbyPostCode);
 //Start the app listening on port 8080
 app.listen(8080);
 
-//Handles GET requests to our web service
+//Handles GET requests to our web service to get All rooms
 function getAllRooms(request, response){
         db.getAllRooms(response);
 }
 
+//Handles GET requests to our web service to get rooms by post code
 function getbyPostCode(request, response) {
     //Parse the URL
     var urlObj = url.parse(request.url, true);
 
     //Extract object containing queries from URL object.
     var queries = urlObj.query;
+
+    //setting number of rooms per page as 20
     var numItems = 20;
 
-    //     //Get the pagination properties if they have been set. Will be  undefined if not set.
+    //Geting the offset value for pagination
     var offset = queries['offset'];
 
     //Split the path of the request into its components
@@ -62,6 +65,8 @@ function getbyPostCode(request, response) {
     //Build query
     let sql = "SELECT * FROM rooms WHERE rooms.postcode = '"+pathEnd+"'";
     sql += "ORDER BY rooms.id LIMIT " + numItems + " OFFSET " + offset;
+
+    //call the function in database.js
     db.getAllByPostcode(sql,response);
 
 }

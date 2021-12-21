@@ -4,7 +4,7 @@ const connectionPool = mysql.createPool({
     connectionLimit: 1,
     host: "localhost",
     user: "root",
-    password: "Ifeelucrepin@1",
+    password: "12345678",
     database: "RentSmart",
     debug: false
 });
@@ -16,29 +16,28 @@ exports.getAllRooms = (response) => {
 
     //Execute query 
     connectionPool.query(sql, (err, result) => {
-        if (err){//Check for errors
+        if (err) {//Check for errors
             let errMsg = "{Error: " + err + "}";
             console.error(errMsg);
             response.status(400).json(errMsg);
         }
-        else{//Return results in JSON format 
-            //console.log(JSON.stringify(result));
+        else {//Return results in JSON format 
             response.send(JSON.stringify(result))
         }
     });
 };
 
-//Gets all rooms
-exports.getAllByPostcode = (sql,response) => {
+//Gets rooms  by post code
+exports.getAllByPostcode = (sql, response) => {
 
     //Execute query 
     connectionPool.query(sql, (err, result) => {
-        if (err){//Check for errors
+        if (err) {//Check for errors
             let errMsg = "{Error: " + err + "}";
             console.error(errMsg);
             response.status(400).json(errMsg);
         }
-        else{//Return results in JSON format 
+        else {//Return results in JSON format 
             //console.log(JSON.stringify(result));
             response.send(JSON.stringify(result))
         }
@@ -50,16 +49,16 @@ exports.getAllByPostcode = (sql,response) => {
 exports.addRoom = (description, rent, postcode, image_url, website_url, seller_id, response) => {
     //Build query
     let sql = "INSERT INTO rooms (description, rent, postcode, image_url, website_url, seller_id) " +
-    "       VALUES ('" + description + "'," + rent +",'" + postcode + "','" + image_url + "','" + website_url + "'," + seller_id +")";
-    
+        "       VALUES ('" + description + "'," + rent + ",'" + postcode + "','" + image_url + "','" + website_url + "'," + seller_id + ")";
+
     //Execute query
     connectionPool.query(sql, (err, result) => {
-        if (err){//Check for errors
+        if (err) {//Check for errors
             let errMsg = "{Error: " + err + "}";
             console.error(errMsg);
             response.status(400).json(errMsg);
         }
-        else{//Send back result
+        else {//Send back result
             response.send("{result: 'Room added successfully'}");
         }
     });
